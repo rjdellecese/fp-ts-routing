@@ -13,6 +13,14 @@
 **Note**: Gaps between patch versions are faulty/broken releases. **Note**: A feature tagged as Experimental is in a
 high state of flux, you're at risk of it changing without notice.
 
+# 0.6.0
+
+- **Breaking Change**
+  - bump `fp-ts` to `2.13.1` and `io-ts` to `2.2.20` (@gcanti)
+
+- **Internal**
+  - refactor for new maintainership (@rjdellecese)
+
 # 0.5.4
 
 - **Polish**

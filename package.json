@@ -36,8 +36,8 @@
   },
   "homepage": "https://github.com/rjdellecese/fp-ts-routing",
   "peerDependencies": {
-    "fp-ts": "^2.0.1",
-    "io-ts": "^2.0.0"
+    "fp-ts": "^2.13.1",
+    "io-ts": "^2.2.20"
   },
   "devDependencies": {
     "@types/jest": "^29.2.4",

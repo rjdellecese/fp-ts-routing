@@ -220,7 +220,7 @@ export declare function int<K extends string>(k: K): Match<{ [_ in K]: number }>
 **Example**
 
 ```ts
-import { int, Route } from 'fp-ts-routing'
+import { int, Route } from '@rjdellecese/fp-ts-routing'
 import { some, none } from 'fp-ts/lib/Option'
 
 assert.deepStrictEqual(int('id').parser.run(Route.parse('/1')), some([{ id: 1 }, new Route([], {})]))
@@ -242,7 +242,7 @@ export declare function lit(literal: string): Match<object>
 **Example**
 
 ```ts
-import { lit, Route } from 'fp-ts-routing'
+import { lit, Route } from '@rjdellecese/fp-ts-routing'
 import { some, none } from 'fp-ts/lib/Option'
 
 assert.deepStrictEqual(lit('subview').parser.run(Route.parse('/subview/')), some([{}, new Route([], {})]))
@@ -267,7 +267,7 @@ export declare function query<A>(type: Type<A, Record<string, QueryValues>>): Ma
 
 ```ts
 import * as t from 'io-ts'
-import { lit, str, query, Route } from 'fp-ts-routing'
+import { lit, str, query, Route } from '@rjdellecese/fp-ts-routing'
 
 const route = lit('accounts')
   .then(str('accountId'))
@@ -293,7 +293,7 @@ export declare function str<K extends string>(k: K): Match<{ [_ in K]: string }>
 **Example**
 
 ```ts
-import { str, Route } from 'fp-ts-routing'
+import { str, Route } from '@rjdellecese/fp-ts-routing'
 import { some, none } from 'fp-ts/lib/Option'
 
 assert.deepStrictEqual(str('id').parser.run(Route.parse('/abc')), some([{ id: 'abc' }, new Route([], {})]))
@@ -338,7 +338,7 @@ export declare function type<K extends string, A>(k: K, type: Type<A, string>): 
 
 ```ts
 import * as t from 'io-ts'
-import { lit, type, Route } from 'fp-ts-routing'
+import { lit, type, Route } from '@rjdellecese/fp-ts-routing'
 import { some, none } from 'fp-ts/lib/Option'
 
 const T = t.keyof({

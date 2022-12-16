@@ -397,7 +397,7 @@ export const end: Match<object> = new Match(
  *
  * @example
  * import * as t from 'io-ts'
- * import { lit, type, Route } from 'fp-ts-routing'
+ * import { lit, type, Route } from '@rjdellecese/fp-ts-routing'
  * import { some, none } from 'fp-ts/lib/Option'
  *
  * const T = t.keyof({
@@ -433,7 +433,7 @@ export function type<K extends string, A>(k: K, type: Type<A, string>): Match<{ 
  * `str` matches any string path component
  *
  * @example
- * import { str, Route } from 'fp-ts-routing'
+ * import { str, Route } from '@rjdellecese/fp-ts-routing'
  * import { some, none } from 'fp-ts/lib/Option'
  *
  * assert.deepStrictEqual(str('id').parser.run(Route.parse('/abc')), some([{ id: 'abc' }, new Route([], {})]))
@@ -464,7 +464,7 @@ export const IntegerFromString = new Type<number, string, unknown>(
  * `int` matches any integer path component
  *
  * @example
- * import { int, Route } from 'fp-ts-routing'
+ * import { int, Route } from '@rjdellecese/fp-ts-routing'
  * import { some, none } from 'fp-ts/lib/Option'
  *
  * assert.deepStrictEqual(int('id').parser.run(Route.parse('/1')), some([{ id: 1 }, new Route([], {})]))
@@ -481,7 +481,7 @@ export function int<K extends string>(k: K): Match<{ [_ in K]: number }> {
  * `lit(x)` will match exactly the path component `x`
  *
  * @example
- * import { lit, Route } from 'fp-ts-routing'
+ * import { lit, Route } from '@rjdellecese/fp-ts-routing'
  * import { some, none } from 'fp-ts/lib/Option'
  *
  * assert.deepStrictEqual(lit('subview').parser.run(Route.parse('/subview/')), some([{}, new Route([], {})]))
@@ -513,7 +513,7 @@ export function lit(literal: string): Match<object> {
  *
  * @example
  * import * as t from 'io-ts'
- * import { lit, str, query, Route } from 'fp-ts-routing'
+ * import { lit, str, query, Route } from '@rjdellecese/fp-ts-routing'
  *
  * const route = lit('accounts')
  *   .then(str('accountId'))

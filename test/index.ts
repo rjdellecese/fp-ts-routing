@@ -30,7 +30,7 @@ export const DateFromISOString = new t.Type(
   (u, c) => {
     const validation = t.string.validate(u, c)
     if (isLeft(validation)) {
-      return validation as any
+      return validation
     } else {
       const s = validation.right
       const d = new Date(s)
@@ -274,7 +274,8 @@ describe('Parser', () => {
     assert.strictEqual(
       pipe(
         query(Q).parser.run(Route.parse('/foo/bar?b=baz')),
-        exists(([q]) => (q as any)['b'] === undefined)
+        // @ts-expect-error expect error for testing
+        exists(([q]) => q['b'] === undefined)
       ),
       true
     )
@@ -320,24 +321,24 @@ describe('Usage example', () => {
   // locations
   class Home {
     static value = new Home()
-    readonly _tag: 'Home' = 'Home'
-    private constructor() {}
+    readonly _tag: 'Home' = 'Home' as const
+    private constructor() {} // eslint-disable-line @typescript-eslint/no-empty-function
   }
 
   class User {
-    readonly _tag: 'User' = 'User'
+    readonly _tag: 'User' = 'User' as const
     constructor(readonly id: number) {}
   }
 
   class Invoice {
-    readonly _tag: 'Invoice' = 'Invoice'
+    readonly _tag: 'Invoice' = 'Invoice' as const
     constructor(readonly userId: number, readonly invoiceId: number) {}
   }
 
   class NotFound {
     static value = new NotFound()
-    readonly _tag: 'NotFound' = 'NotFound'
-    private constructor() {}
+    readonly _tag: 'NotFound' = 'NotFound' as const
+    private constructor() {} // eslint-disable-line @typescript-eslint/no-empty-function
   }
 
   type Location = Home | User | Invoice | NotFound

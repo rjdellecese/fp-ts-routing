@@ -192,7 +192,7 @@ Added in v0.4.0
 **Signature**
 
 ```ts
-export declare const end: Match<{}>
+export declare const end: Match<object>
 ```
 
 Added in v0.4.0
@@ -236,7 +236,7 @@ Added in v0.4.0
 **Signature**
 
 ```ts
-export declare function lit(literal: string): Match<{}>
+export declare function lit(literal: string): Match<object>
 ```
 
 **Example**
@@ -464,7 +464,7 @@ Added in v0.5.1
 **Signature**
 
 ```ts
-export declare const apFirst: <B>(fb: Parser<B>) => <A>(fa: Parser<A>) => Parser<A>
+export declare const apFirst: <B>(second: Parser<B>) => <A>(first: Parser<A>) => Parser<A>
 ```
 
 Added in v0.5.1
@@ -474,7 +474,7 @@ Added in v0.5.1
 **Signature**
 
 ```ts
-export declare const apSecond: <B>(fb: Parser<B>) => <A>(fa: Parser<A>) => Parser<B>
+export declare const apSecond: <B>(second: Parser<B>) => <A>(first: Parser<A>) => Parser<B>
 ```
 
 Added in v0.5.1
@@ -484,7 +484,7 @@ Added in v0.5.1
 **Signature**
 
 ```ts
-export declare const chain: <A, B>(f: (a: A) => Parser<B>) => (ma: Parser<A>) => Parser<B>
+export declare const chain: <A, B>(f: (a: A) => Parser<B>) => (fa: Parser<A>) => Parser<B>
 ```
 
 Added in v0.5.1
@@ -494,7 +494,7 @@ Added in v0.5.1
 **Signature**
 
 ```ts
-export declare const chainFirst: <A, B>(f: (a: A) => Parser<B>) => (ma: Parser<A>) => Parser<A>
+export declare const chainFirst: <A, B>(f: (a: A) => Parser<B>) => (first: Parser<A>) => Parser<A>
 ```
 
 Added in v0.5.1
@@ -504,7 +504,7 @@ Added in v0.5.1
 **Signature**
 
 ```ts
-export declare const flatten: <A>(mma: Parser<Parser<A>>) => Parser<A>
+export declare const flatten: Monad1<'fp-ts-routing/Parser'> & Alternative1<'fp-ts-routing/Parser'>
 ```
 
 Added in v0.5.1

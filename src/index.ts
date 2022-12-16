@@ -2,17 +2,16 @@
  * @since 0.4.0
  */
 import { Alternative1 } from 'fp-ts/lib/Alternative'
-import { either } from 'fp-ts/lib/Either'
-import { identity, tuple } from 'fp-ts/lib/function'
+import { identity, pipe, tuple } from 'fp-ts/lib/function'
 import { Monad1 } from 'fp-ts/lib/Monad'
 import { Monoid } from 'fp-ts/lib/Monoid'
-import { fromEither, fromNullable, isNone, none, Option, option, some } from 'fp-ts/lib/Option'
-import { pipe, pipeable } from 'fp-ts/lib/pipeable'
+import { fromEither, fromNullable, isNone, none, Option, some } from 'fp-ts/lib/Option'
 import { filter, isEmpty } from 'fp-ts/lib/Record'
-import { failure, Int, string, success, Type } from 'io-ts'
+import { failure, Int, string, success, Type, Validation } from 'io-ts'
 import { stringify } from 'querystring'
 import { parse as parseUrl } from 'url'
 import { Contravariant1 } from 'fp-ts/lib/Contravariant'
+import { apply, chain as chain_, either, identity as identity_, option, pipeable } from 'fp-ts'
 
 /**
  * @category routes
@@ -49,11 +48,10 @@ export class Route {
    */
   static parse(s: string, decode: boolean = true): Route {
     const route = parseUrl(s, true)
-    // tslint:disable-next-line: deprecation
-    const oparts = option.map(fromNullable(route.pathname), (s) => {
+    const oparts = option.map((s: string) => {
       const r = s.split('/').filter(Boolean)
       return decode ? r.map(decodeURIComponent) : r
-    })
+    })(fromNullable(route.pathname))
     const parts = isNone(oparts) ? [] : oparts.value
     return new Route(parts, Object.assign({}, route.query))
   }
@@ -61,7 +59,6 @@ export class Route {
    * @since 0.4.0
    */
   toString(encode: boolean = true): string {
-    // tslint:disable-next-line: deprecation
     const nonUndefinedQuery = pipe(
       this.query,
       filter((value) => value !== undefined)
@@ -127,8 +124,7 @@ export class Parser<A> {
    * @since 0.4.0
    */
   chain<B>(f: (a: A) => Parser<B>): Parser<B> {
-    // tslint:disable-next-line: deprecation
-    return new Parser((r) => option.chain(this.run(r), ([a, r2]) => f(a).run(r2)))
+    return new Parser((r) => option.chain(([a, r2]: [A, Route]) => f(a).run(r2))(this.run(r)))
   }
   /**
    * @since 0.4.0
@@ -160,8 +156,7 @@ export function zero<A>(): Parser<A> {
  * @since 0.4.0
  */
 export function parse<A>(parser: Parser<A>, r: Route, a: A): A {
-  // tslint:disable-next-line: deprecation
-  const oa = option.map(parser.run(r), ([a]) => a)
+  const oa = option.map(([a]: [A, Route]) => a)(parser.run(r))
   return isNone(oa) ? a : oa.value
 }
 
@@ -192,51 +187,53 @@ export const parser: Monad1<PARSER_URI> & Alternative1<PARSER_URI> = {
   zero
 }
 
-// tslint:disable-next-line: deprecation
-const { alt, ap, apFirst, apSecond, chain, chainFirst, flatten, map } = pipeable(parser)
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const alt = pipeable.alt(parser)
 
-export {
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  alt,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  ap,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  apFirst,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  apSecond,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  chain,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  chainFirst,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  flatten,
-  /**
-   * @category parsers
-   * @since 0.5.1
-   */
-  map
-}
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const ap = pipeable.ap(parser)
+
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const apFirst = apply.apFirst(parser)
+
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const apSecond = apply.apSecond(parser)
+
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const chain = pipeable.chain(parser)
+
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const chainFirst = chain_.chainFirst(parser)
+
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const flatten = identity_.flatten(parser)
+
+/**
+ * @category parsers
+ * @since 0.5.1
+ */
+export const map = pipeable.map(parser)
 
 /**
  * @category formatters
@@ -289,16 +286,11 @@ export const formatter: Contravariant1<FORMATTER_URI> = {
   contramap: (fa, f) => fa.contramap(f)
 }
 
-// tslint:disable-next-line: deprecation
-const { contramap } = pipeable(formatter)
-
-export {
-  /**
-   * @category formatters
-   * @since 0.5.1
-   */
-  contramap
-}
+/**
+ * @category formatters
+ * @since 0.5.1
+ */
+export const contramap = pipeable.contramap(formatter)
 
 /**
  * @category matchers
@@ -339,9 +331,11 @@ export function imap<A, B>(f: (a: A) => B, g: (b: B) => A): (ma: Match<A>) => Ma
  * @since 0.5.1
  */
 export function then<B>(mb: Match<B>): <A>(ma: Match<A> & Match<RowLacks<A, keyof B>>) => Match<A & B> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (ma) => ma.then(mb as any)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const singleton = <K extends string, V>(k: K, v: V): { [_ in K]: V } => ({ [k as any]: v } as any)
 
 /**
@@ -360,7 +354,7 @@ export function succeed<A>(a: A): Match<A> {
  * @category matchers
  * @since 0.4.0
  */
-export const end: Match<{}> = new Match(
+export const end: Match<object> = new Match(
   new Parser((r) => (Route.isEmpty(r) ? some(tuple({}, r)) : none)),
   new Formatter(identity)
 )
@@ -395,8 +389,7 @@ export function type<K extends string, A>(k: K, type: Type<A, string>): Match<{ 
       } else {
         const head = r.parts[0]
         const tail = r.parts.slice(1)
-        // tslint:disable-next-line: deprecation
-        return option.map(fromEither(type.decode(head)), (a) => tuple(singleton(k, a), new Route(tail, r.query)))
+        return option.map((a: A) => tuple(singleton(k, a), new Route(tail, r.query)))(fromEither(type.decode(head)))
       }
     }),
     new Formatter((r, o) => new Route(r.parts.concat(type.encode(o[k])), r.query))
@@ -427,11 +420,10 @@ export const IntegerFromString = new Type<number, string, unknown>(
   'IntegerFromString',
   (u): u is number => Int.is(u),
   (u, c) =>
-    // tslint:disable-next-line: deprecation
-    either.chain(string.validate(u, c), (s) => {
+    either.chain((s: string): Validation<number> => {
       const n = +s
       return isNaN(n) || !Number.isInteger(n) ? failure(s, c) : success(n)
-    }),
+    })(string.validate(u, c)),
   String
 )
 
@@ -465,7 +457,7 @@ export function int<K extends string>(k: K): Match<{ [_ in K]: number }> {
  * @category matchers
  * @since 0.4.0
  */
-export function lit(literal: string): Match<{}> {
+export function lit(literal: string): Match<object> {
   return new Match(
     new Parser((r) => {
       if (r.parts.length === 0) {
@@ -503,8 +495,7 @@ export function lit(literal: string): Match<{}> {
  */
 export function query<A>(type: Type<A, Record<string, QueryValues>>): Match<A> {
   return new Match(
-    // tslint:disable-next-line: deprecation
-    new Parser((r) => option.map(fromEither(type.decode(r.query)), (query) => tuple(query, new Route(r.parts, {})))),
+    new Parser((r) => option.map((query: A) => tuple(query, new Route(r.parts, {})))(fromEither(type.decode(r.query)))),
     new Formatter((r, query) => new Route(r.parts, type.encode(query)))
   )
 }

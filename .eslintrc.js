@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     node: true
   },
-  ignorePatterns: ['es6/**/*', 'lib/**/*', '.eslintrc.js', 'jest.config.ts'],
+  ignorePatterns: ['es6/**/*', 'lib/**/*', 'coverage/**/*', '.eslintrc.js', 'jest.config.ts'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',

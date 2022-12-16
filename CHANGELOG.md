@@ -16,7 +16,8 @@ high state of flux, you're at risk of it changing without notice.
 # 0.6.0
 
 - **Breaking Change**
-  - bump `fp-ts` to `2.13.1` and `io-ts` to `2.2.20` (@gcanti)
+  - bump `fp-ts` to `2.13.1` and `io-ts` to `2.2.20` (@rjdellecese)
+  - drop dependencies on `querystring` and `url`, per https://github.com/gcanti/fp-ts-routing/pull/61 (@rjdellecese)
 
 - **Internal**
   - refactor for new maintainership (@rjdellecese)

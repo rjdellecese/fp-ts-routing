@@ -5,7 +5,7 @@
 To install the stable version:
 
 ```sh
-npm i fp-ts-routing
+npm install @rjdellecese/fp-ts-routing
 ```
 
 # Usage

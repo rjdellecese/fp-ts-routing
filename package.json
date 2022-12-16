@@ -1,5 +1,5 @@
 {
-  "name": "fp-ts-routing",
+  "name": "@rjdellecese/fp-ts-routing",
   "version": "0.6.0",
   "description": "A type-safe routing library for TypeScript",
   "files": [

@@ -11,51 +11,52 @@
   "typings": "lib/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "lint": "tslint -p .",
+    "lint": "eslint --max-warnings=0 .",
     "jest": "jest --ci",
     "jest-coverage": "jest --ci --coverage",
     "prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --list-different \"{src,test}/**/*.ts\"",
     "fix-prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --write \"{src,test}/**/*.ts\"",
-    "test": "npm run prettier && npm run lint && npm run dtslint && npm run jest && npm run docs",
+    "test": "npm run prettier && npm run lint && npm run jest && npm run docs",
     "clean": "rm -rf lib/* es6/*",
     "prebuild": "npm run clean",
     "build": "tsc -p ./tsconfig.build.json && tsc -p ./tsconfig.build-es6.json",
     "prepublish": "npm run build",
-    "dtslint": "dtslint dtslint",
     "docs": "docs-ts",
     "mocha": "mocha -r ts-node/register test/*.ts",
     "postbuild": "import-path-rewrite"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gcanti/fp-ts-routing.git"
+    "url": "https://github.com/rjdellcese/fp-ts-routing.git"
   },
-  "author": "Giulio Canti <giulio.canti@gmail.com>",
+  "author": "RJ Dellecese",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gcanti/fp-ts-routing/issues"
+    "url": "https://github.com/rjdellecese/fp-ts-routing/issues"
   },
-  "homepage": "https://github.com/gcanti/fp-ts-routing",
+  "homepage": "https://github.com/rjdellecese/fp-ts-routing",
   "peerDependencies": {
     "fp-ts": "^2.0.1",
     "io-ts": "^2.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.2",
-    "@types/node": "^12.6.8",
-    "docs-ts": "^0.6.7",
-    "dtslint": "github:gcanti/dtslint",
-    "fp-ts": "^2.0.1",
+    "@types/jest": "^29.2.4",
+    "@types/node": "^18.11.15",
+    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/parser": "^5.46.1",
+    "docs-ts": "^0.7.0",
+    "eslint": "^8.29.0",
+    "eslint-plugin-deprecation": "^1.3.3",
+    "eslint-plugin-import": "^2.26.0",
+    "fp-ts": "^2.13.1",
     "import-path-rewrite": "github:gcanti/import-path-rewrite",
-    "io-ts": "^2.0.0",
-    "jest": "^24.8.0",
-    "mocha": "^6.1.4",
-    "prettier": "^2.7.1",
-    "ts-jest": "^24.0.2",
-    "ts-node": "3.3.0",
-    "tslint": "5.11.0",
-    "tslint-config-standard": "^8.0.1",
-    "typescript": "^4.7.4"
+    "io-ts": "^2.2.20",
+    "jest": "^29.3.1",
+    "mocha": "^10.2.0",
+    "prettier": "^2.8.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "10.9.1",
+    "typescript": "^4.9.4"
   },
   "tags": [
     "typescript",

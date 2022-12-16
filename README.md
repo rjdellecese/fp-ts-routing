@@ -1,3 +1,5 @@
+⚠️ This is a fork of [gcanti/fp-ts-routing](https://github.com/gcanti/fp-ts-routing). ⚠️
+
 # Installation
 
 To install the stable version:
@@ -5,10 +7,6 @@ To install the stable version:
 ```sh
 npm i fp-ts-routing
 ```
-
-# TypeScript compatibility
-
-The stable version is tested against TypeScript 3.5.2 but should run with 3.2.2+ too.
 
 # Usage
 
@@ -88,4 +86,4 @@ assert.strictEqual(format(invoiceMatch.formatter, { userId: 1, invoiceId: 2 }), 
 
 # Documentation
 
-- [API Reference](https://gcanti.github.io/fp-ts-routing)
+- [API Reference](https://rjdellcese.github.io/fp-ts-routing)
